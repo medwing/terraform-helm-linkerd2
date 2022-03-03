@@ -32,7 +32,7 @@ resource "helm_release" "linkerd_ha" {
   }
 
   provisioner "local-exec" {
-    command     = "kubectl ${var.command} --kubeconfig <(echo $KUBECONFIG | base64 --decode) label namespace kube-system config.linkerd.io/admission-webhooks=disabled"
+    command     = "kubectl label namespace kube-system config.linkerd.io/admission-webhooks=disabled --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
     interpreter = ["/bin/bash", "-c"]
     environment = {
       KUBECONFIG = base64encode(var.kubeconfig)
