@@ -9,3 +9,9 @@ variable "kubeconfig" {
   type = string
   default = ""
 }
+
+variable "helm_values" {
+  description = "helm chart values.yaml to be used in addtion"
+  type = string
+  default = ""
+}

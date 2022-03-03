@@ -8,7 +8,8 @@ resource "helm_release" "linkerd_ha" {
   repository = "https://helm.linkerd.io/stable"
   chart      = "linkerd2"
   values = [
-    file("${path.module}/${local.values}")
+    file("${path.module}/${local.values}"),
+    var.helm_values
   ]
   set_sensitive {
     name  = "global.identityTrustAnchorsPEM"
