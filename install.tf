@@ -2,8 +2,7 @@ locals {
   values = var.enable_linkerd_ha == true ? "values-ha.yaml" : "values.yaml"
 }
 
-resource "helm_release" "linkerd_ha" {
-  count      = var.enable_linkerd_ha == true ? 1 : 0
+resource "helm_release" "linkerd" {
   name       = "linkerd"
   repository = "https://helm.linkerd.io/stable"
   chart      = "linkerd2"
