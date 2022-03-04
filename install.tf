@@ -49,6 +49,9 @@ resource "helm_release" "linkerd-viz" {
   values = [
     var.helm_values_linkerd_viz
   ]
+  depends_on = [
+    helm_release.linkerd
+  ]
 }
 
 resource "helm_release" "linkerd-multicluster" {
@@ -59,21 +62,22 @@ resource "helm_release" "linkerd-multicluster" {
   chart      = "linkerd-multicluster"
   values = [
     templatefile("${path.module}/multicluster-values.yaml.tpl", {
+      installNamespace               = var.multicluster_installNamespace
+      linkerdVersion                 = var.multicluster_linkerdVersion
+      namespace                      = var.multicluster_namespace
+      proxyOutboundPort              = var.multicluster_proxyOutboundPort
+      remoteMirrorServiceAccount     = var.multicluster_remoteMirrorServiceAccount
+      remoteMirrorServiceAccountName = var.multicluster_remoteMirrorServiceAccountName
+      linkerdNamespace               = var.multicluster_linkerdNamespace
+      identityTrustDomain            = var.multicluster_identityTrustDomain
+      enablePSP                      = var.multicluster_enablePSP
+
       gateway = {
-        installNamespace               = var.multicluster_installNamespace
-        linkerdVersion                 = var.multicluster_linkerdVersion
-        namespace                      = var.multicluster_namespace
-        proxyOutboundPort              = var.multicluster_proxyOutboundPort
-        remoteMirrorServiceAccount     = var.multicluster_remoteMirrorServiceAccount
-        remoteMirrorServiceAccountName = var.multicluster_remoteMirrorServiceAccountName
-        linkerdNamespace               = var.multicluster_linkerdNamespace
-        identityTrustDomain            = var.multicluster_identityTrustDomain
-        enablePSP                      = var.multicluster_enablePSP
-        enabled                        = var.multicluster_gateway_enabled
-        name                           = var.multicluster_gateway_name
-        port                           = var.multicluster_gateway_port
-        serviceType                    = var.multicluster_gateway_serviceType
-        nodePort                       = var.multicluster_gateway_nodePort
+        enabled     = var.multicluster_gateway_enabled
+        name        = var.multicluster_gateway_name
+        port        = var.multicluster_gateway_port
+        serviceType = var.multicluster_gateway_serviceType
+        nodePort    = var.multicluster_gateway_nodePort
         probe = {
           path    = var.multicluster_gateway_probe_path
           port    = var.multicluster_gateway_probe_port
@@ -84,5 +88,8 @@ resource "helm_release" "linkerd-multicluster" {
       }
     }),
     var.helm_values_linkerd_multicluster
+  ]
+  depends_on = [
+    helm_release.linkerd
   ]
 }
