@@ -39,3 +39,14 @@ resource "helm_release" "linkerd" {
     }
   }
 }
+
+resource "helm_release" "linkerd-viz" {
+  count =  var.enable_linkerd_viz == true ? 1 : 0
+
+  name = "linkerd-viz"
+  repository = "https://helm.linkerd.io/stable"
+  chart      = "linkerd-viz"
+  values = [
+    var.helm_values_linkerd
+  ]
+}
