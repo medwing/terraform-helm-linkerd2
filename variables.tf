@@ -4,12 +4,6 @@ variable "enable_linkerd_ha" {
   default     = false
 }
 
-variable "kubeconfig" {
-  description = "kubeconfig for cluster administration, needed in ha mode to stop from deploying proxy into kube-system"
-  type        = string
-  default     = ""
-}
-
 variable "helm_values_linkerd" {
   description = "helm chart values.yaml to be used in addtion"
   type        = string

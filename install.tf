@@ -29,14 +29,40 @@ resource "helm_release" "linkerd" {
     name  = "identity.issuer.tls.keyPEM"
     value = tls_private_key.issuer_key.private_key_pem
   }
+}
 
-  # see https://linkerd.io/2.11/features/ha/#exclude-the-kube-system-namespace for details
-  provisioner "local-exec" {
-    command     = "kubectl label namespace kube-system config.linkerd.io/admission-webhooks=disabled --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
-    interpreter = ["/bin/bash", "-c"]
-    environment = {
-      KUBECONFIG = base64encode(var.kubeconfig)
-    }
+data "kubernetes_namespace" "kube-system-source" {
+  metadata {
+    name = "kube-system"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata.name,
+      metadata.annotations,
+      metadata.generate_name,
+      generation,
+      resource_version,
+      uid
+    ]
+  }
+}
+# see https://linkerd.io/2.11/features/ha/#exclude-the-kube-system-namespace for details
+resource "kubernetes_namespace" "kube-system-target" {
+  metadata {
+    name   = "kube-system"
+    labels = merge(data.kubernetes_namespace.kube-system-source.metadata.labels, { "config.linkerd.io/admission-webhooks" = disabled })
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata.name,
+      metadata.annotations,
+      metadata.generate_name,
+      generation,
+      resource_version,
+      uid
+    ]
   }
 }
 
