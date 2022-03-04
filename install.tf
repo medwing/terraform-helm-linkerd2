@@ -40,14 +40,14 @@ data "kubernetes_namespace" "kube-system-source" {
 resource "kubernetes_namespace" "kube-system-target" {
   metadata {
     name   = "kube-system"
-    labels = merge(data.kubernetes_namespace.kube-system-source.metadata.labels, { "config.linkerd.io/admission-webhooks" = disabled })
+    labels = merge(data.kubernetes_namespace.kube-system-source.metadata[0].labels, { "config.linkerd.io/admission-webhooks" = disabled })
   }
 
   lifecycle {
     ignore_changes = [
-      metadata.name,
-      metadata.annotations,
-      metadata.generate_name,
+      metadata[0].name,
+      metadata[0].annotations,
+      metadata[0].generate_name,
       generation,
       resource_version,
       uid
