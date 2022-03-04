@@ -35,17 +35,6 @@ data "kubernetes_namespace" "kube-system-source" {
   metadata {
     name = "kube-system"
   }
-
-  lifecycle {
-    ignore_changes = [
-      metadata.name,
-      metadata.annotations,
-      metadata.generate_name,
-      generation,
-      resource_version,
-      uid
-    ]
-  }
 }
 # see https://linkerd.io/2.11/features/ha/#exclude-the-kube-system-namespace for details
 resource "kubernetes_namespace" "kube-system-target" {
