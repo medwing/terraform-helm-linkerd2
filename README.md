@@ -1,8 +1,8 @@
-# deploy-linkerd-terraform-helm
+# terraform-helm-linkerd2
 
-Deploy Linkerd2 using Terraform Helm Provider. 
-Linkerd: Ultra light, ultra simple and ultra powerfu service mesh
-Linkerd adds security, observability, and reliability to Kubernetes, without the complexity. CNCF-hosted and 100% open source.
+[Forked](https://github.com/AymenSegni/terraform-helm-linkerd2) to add support for
+- linkerd-viz
+- linkerd-multicluster
 
 ## Terraform Linkerd Module
 
@@ -49,8 +49,11 @@ provider "helm" {
 // Deploy Linkerd on DEV cluster with disabling HA Mode
 
 module "dev_linkerd" {
-  source            = "AymenSegni/deploy-linkerd-terraform-hel"
-  enable_linkerd_ha = false 
+  source            = "github.com/medwing/terraform-helm-linkerd2?ref=v1.1.0"
+  enable_linkerd_ha = true
+  kubeconfig        = file("~/.kube/config")
+  enable_linkerd_viz = true
+  enable_linkerd_multicluster = false
   providers = {
     helm = helm.aks-dev
   }
