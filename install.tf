@@ -48,6 +48,9 @@ resource "kubernetes_namespace" "kube-system-target" {
       metadata[0].name,
       metadata[0].annotations,
       metadata[0].generate_name,
+      metadata[0].generation,
+      metadata[0].resource_version,
+      metadata[0].uid,
       id
     ]
   }
