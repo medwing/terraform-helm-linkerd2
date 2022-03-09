@@ -42,6 +42,16 @@ resource "helm_release" "linkerd-viz" {
   depends_on = [
     helm_release.linkerd
   ]
+
+  set {
+    name  = "prometheus.enabled"
+    value = var.external_prometheus_url == "" ? true : false
+  }
+
+  set {
+    name  = "prometheusUrl"
+    value = var.external_prometheus_url
+  }
 }
 
 resource "helm_release" "linkerd-multicluster" {
