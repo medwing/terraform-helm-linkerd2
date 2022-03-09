@@ -30,32 +30,6 @@ resource "helm_release" "linkerd" {
     value = tls_private_key.issuer_key.private_key_pem
   }
 }
-
-data "kubernetes_namespace" "kube-system-source" {
-  metadata {
-    name = "kube-system"
-  }
-}
-# see https://linkerd.io/2.11/features/ha/#exclude-the-kube-system-namespace for details
-resource "kubernetes_namespace" "kube-system-target" {
-  metadata {
-    name   = "kube-system"
-    labels = merge(data.kubernetes_namespace.kube-system-source.metadata[0].labels, { "config.linkerd.io/admission-webhooks" = "disabled" })
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata[0].name,
-      metadata[0].annotations,
-      metadata[0].generate_name,
-      metadata[0].generation,
-      metadata[0].resource_version,
-      metadata[0].uid,
-      id
-    ]
-  }
-}
-
 resource "helm_release" "linkerd-viz" {
   count = var.enable_linkerd_viz == true ? 1 : 0
 
@@ -108,4 +82,8 @@ resource "helm_release" "linkerd-multicluster" {
   depends_on = [
     helm_release.linkerd
   ]
+}
+
+output "linkerd" {
+  value = "If in HA-mode, please refer to https://linkerd.io/2.11/features/ha/ and set label on kube-system: config.linkerd.io/admission-webhooks=disabled"
 }
