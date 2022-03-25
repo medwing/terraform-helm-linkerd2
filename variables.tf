@@ -33,3 +33,11 @@ variable "enable_linkerd_multicluster" {
   type        = bool
   default     = false
 }
+
+variable "trustanchor_key" {
+  description = "external trustanchor key"
+}
+
+variable "trustanchor_cert" {
+  description = "external trustanchor cert"
+}

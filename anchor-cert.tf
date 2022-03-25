@@ -1,11 +1,13 @@
 // Create trusted Anchor Certificate
 
 resource "tls_private_key" "trustanchor_key" {
+  count       = var.trustanchor_key ? 0 : 1
   algorithm   = "ECDSA"
   ecdsa_curve = "P256"
 }
 
 resource "tls_self_signed_cert" "trustanchor_cert" {
+  count                 = var.trustanchor_cert ? 0 : 1
   key_algorithm         = tls_private_key.trustanchor_key.algorithm
   private_key_pem       = tls_private_key.trustanchor_key.private_key_pem
   validity_period_hours = 87600
@@ -39,9 +41,9 @@ resource "tls_cert_request" "issuer_req" {
 
 resource "tls_locally_signed_cert" "issuer_cert" {
   cert_request_pem      = tls_cert_request.issuer_req.cert_request_pem
-  ca_key_algorithm      = tls_private_key.trustanchor_key.algorithm
-  ca_private_key_pem    = tls_private_key.trustanchor_key.private_key_pem
-  ca_cert_pem           = tls_self_signed_cert.trustanchor_cert.cert_pem
+  ca_key_algorithm      = var.trustanchor_key ? var.trustanchor_key.algorithm : tls_private_key.trustanchor_key.algorithm
+  ca_private_key_pem    = var.trustanchor_key ? var.trustanchor_key.private_key_pem : tls_private_key.trustanchor_key.private_key_pem
+  ca_cert_pem           = var.trustanchor_cert ? var.trustanchor_cert.cert_pem : tls_self_signed_cert.trustanchor_cert.cert_pem
   validity_period_hours = 8760
   is_ca_certificate     = true
 
