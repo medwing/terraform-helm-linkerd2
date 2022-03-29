@@ -12,7 +12,7 @@ resource "helm_release" "linkerd" {
   ]
   set_sensitive {
     name  = "identityTrustAnchorsPEM"
-    value = try(var.trustanchor_cert, false) ? var.trustanchor_cert.cert_pem : tls_self_signed_cert.trustanchor_cert[0].cert_pem
+    value = var.external_trustanchor ? var.trustanchor_cert.cert_pem : tls_self_signed_cert.trustanchor_cert[0].cert_pem
   }
 
   set_sensitive {

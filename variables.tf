@@ -34,6 +34,11 @@ variable "enable_linkerd_multicluster" {
   default     = false
 }
 
+variable "external_trustanchor" {
+  description = "enable the externally supplied trustanchor creation, implies setting trustanchor_* variables!"
+  default     = false
+}
+
 variable "trustanchor_key" {
   description = "external trustanchor key"
   default     = false
