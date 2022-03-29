@@ -31,8 +31,8 @@ resource "tls_private_key" "issuer_key" {
 }
 
 resource "tls_cert_request" "issuer_req" {
-  key_algorithm   = var.external_trustanchor ? var.trustanchor_key.algorithm : tls_private_key.trustanchor_key[0].algorithm
-  private_key_pem = var.external_trustanchor ? var.trustanchor_key.private_key_pem : tls_private_key.trustanchor_key[0].private_key_pem
+  key_algorithm   = tls_private_key.issuer_key.algorithm
+  private_key_pem = tls_private_key.issuer_key.private_key_pem
 
   subject {
     common_name = "identity.linkerd.cluster.local"
