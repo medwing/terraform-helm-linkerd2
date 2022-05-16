@@ -10,6 +10,12 @@ resource "helm_release" "linkerd" {
     file("${path.module}/${local.values}"),
     var.helm_values_linkerd
   ]
+
+  set {
+    name  = "clusterDomain"
+    value = var.cluster_dns_name
+  }
+
   set_sensitive {
     name  = "identityTrustAnchorsPEM"
     value = var.external_trustanchor ? var.trustanchor_cert.cert_pem : tls_self_signed_cert.trustanchor_cert[0].cert_pem

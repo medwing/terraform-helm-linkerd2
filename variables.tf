@@ -1,3 +1,9 @@
+variable "cluster_dns_name" {
+  description = "DNS Domainname for the cluster"
+  type        = string
+  default     = "cluster.local"
+}
+
 variable "enable_linkerd_ha" {
   description = "Enable Linkerd HA Mode for production cluster if true"
   type        = bool
