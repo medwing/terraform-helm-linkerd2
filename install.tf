@@ -50,6 +50,11 @@ resource "helm_release" "linkerd-viz" {
   ]
 
   set {
+    name  = "clusterDomain"
+    value = var.cluster_dns_name
+  }
+
+  set {
     name  = "prometheus.enabled"
     value = var.external_prometheus_url == "" ? true : false
   }
