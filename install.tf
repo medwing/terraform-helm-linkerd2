@@ -74,7 +74,7 @@ resource "helm_release" "linkerd-multicluster" {
   values = [
     templatefile("${path.module}/multicluster-values.yaml.tpl", {
       installNamespace               = var.multicluster_installNamespace
-      linkerdVersion                 = var.multicluster_linkerdVersion
+      linkerdVersion                 = var.linkerd_version
       namespace                      = var.multicluster_namespace
       proxyOutboundPort              = var.multicluster_proxyOutboundPort
       remoteMirrorServiceAccount     = var.multicluster_remoteMirrorServiceAccount

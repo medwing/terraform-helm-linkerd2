@@ -59,11 +59,6 @@ variable "multicluster_installNamespace" {
   type        = string
   default     = "true"
 }
-variable "multicluster_linkerdVersion" {
-  description = "see https://artifacthub.io/packages/helm/linkerd2/linkerd-multicluster?modal=values"
-  type        = string
-  default     = "stable-2.11.1"
-}
 variable "multicluster_namespace" {
   description = "see https://artifacthub.io/packages/helm/linkerd2/linkerd-multicluster?modal=values"
   type        = string

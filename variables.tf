@@ -4,6 +4,11 @@ variable "cluster_dns_name" {
   default     = "cluster.local"
 }
 
+variable "linkerd_version" {
+  description = "linkerd version to be installed"
+  type        = string
+}
+
 variable "enable_linkerd_ha" {
   description = "Enable Linkerd HA Mode for production cluster if true"
   type        = bool
