@@ -1,3 +1,9 @@
+variable "enable_linkerd_multicluster" {
+  description = "install linkerd multicluster"
+  type        = bool
+  default     = false
+}
+
 variable "helm_values_linkerd_multicluster" {
   description = "additional values for linked-multicluster release, it's mandatory - there are values that needs to be set, refer to https://artifacthub.io/packages/helm/linkerd2/linkerd-multicluster?modal=values"
   type        = string
