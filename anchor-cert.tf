@@ -58,7 +58,7 @@ resource "tls_locally_signed_cert" "issuer_cert" {
   ca_private_key_pem    = var.external_trustanchor ? var.trustanchor_key.private_key_pem : tls_private_key.trustanchor_key[0].private_key_pem
   ca_cert_pem           = var.external_trustanchor ? var.trustanchor_cert.cert_pem : tls_self_signed_cert.trustanchor_cert[0].cert_pem
   validity_period_hours = 8760
-  is_ca_certificate     = false
+  is_ca_certificate     = true
 
   allowed_uses = [
     "crl_signing",
