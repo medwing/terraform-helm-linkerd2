@@ -1,16 +1,22 @@
 locals {
-  values = var.enable_linkerd_ha == true ? "values-ha.yaml" : "values.yaml"
+  values = var.enable_linkerd_ha == true ? "controlplane_ha_values.yaml" : "controlplane_values.yaml"
 }
 
-resource "helm_release" "linkerd" {
-  name       = "linkerd"
-  repository = "https://helm.linkerd.io/stable"
-  chart      = "linkerd2"
+resource "helm_release" "linkerd-control-plane" {
+  name             = "linkerd-control-plane"
+  repository       = "https://helm.linkerd.io/stable"
+  chart            = "linkerd-control-plane"
+  namespace        = "linkerd"
+  create_namespace = true
   values = [
     file("${path.module}/${local.values}"),
     var.helm_values_linkerd
   ]
 
+  set {
+    name  = "proxyInit.runAsRoot" #Docker runtime prevents init container from starting
+    value = true
+  }
   set {
     name  = "linkerdVersion"
     value = var.linkerd_version
@@ -40,6 +46,9 @@ resource "helm_release" "linkerd" {
     name  = "identity.issuer.tls.keyPEM"
     value = tls_private_key.issuer_key.private_key_pem
   }
+  depends_on = [
+    helm_release.linkerd-crds
+  ]
 }
 
 output "linkerd" {

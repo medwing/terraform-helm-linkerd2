@@ -1,16 +1,10 @@
 resource "helm_release" "linkerd-viz" {
-  count = var.enable_linkerd_viz == true ? 1 : 0
-
-  name       = "linkerd-viz"
-  repository = "https://helm.linkerd.io/stable"
-  chart      = "linkerd-viz"
-  values = [
-    var.helm_values_linkerd_viz
-  ]
-  depends_on = [
-    helm_release.linkerd
-  ]
-
+  count            = var.enable_linkerd_viz == true ? 1 : 0
+  name             = "linkerd-viz"
+  repository       = "https://helm.linkerd.io/stable"
+  chart            = "linkerd-viz"
+  namespace        = "linkerd-viz"
+  create_namespace = true
   set {
     name  = "linkerdVersion"
     value = var.linkerd_version
@@ -30,4 +24,7 @@ resource "helm_release" "linkerd-viz" {
     name  = "prometheusUrl"
     value = var.external_prometheus_url
   }
+  depends_on = [
+    helm_release.linkerd-crds
+  ]
 }

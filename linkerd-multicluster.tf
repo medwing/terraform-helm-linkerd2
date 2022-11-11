@@ -1,9 +1,11 @@
 resource "helm_release" "linkerd-multicluster" {
   count = var.enable_linkerd_multicluster == true ? 1 : 0
 
-  name       = "linkerd-multicluster"
-  repository = "https://helm.linkerd.io/stable"
-  chart      = "linkerd-multicluster"
+  name             = "linkerd-multicluster"
+  repository       = "https://helm.linkerd.io/stable"
+  chart            = "linkerd-multicluster"
+  namespace        = "linkerd-multicluster"
+  create_namespace = true
   values = [
     templatefile("${path.module}/multicluster-values.yaml.tpl", {
       installNamespace               = var.multicluster_installNamespace
@@ -34,6 +36,6 @@ resource "helm_release" "linkerd-multicluster" {
     var.helm_values_linkerd_multicluster
   ]
   depends_on = [
-    helm_release.linkerd
+    helm_release.linkerd-control-plane
   ]
 }
