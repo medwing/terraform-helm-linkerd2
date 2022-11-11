@@ -25,6 +25,6 @@ resource "helm_release" "linkerd-viz" {
     value = var.external_prometheus_url
   }
   depends_on = [
-    helm_release.linkerd-crds
+    helm_release.linkerd-control-plane
   ]
 }
