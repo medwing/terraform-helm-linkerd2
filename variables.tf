@@ -27,4 +27,9 @@ variable "external_prometheus_url" {
   default     = ""
 }
 
+variable "enable_linkerd_smi" {
+  description = "Enable Linkerd SMI"
+  type        = bool
+  default     = true
+}
 
