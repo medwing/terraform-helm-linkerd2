@@ -33,3 +33,9 @@ variable "enable_linkerd_smi" {
   default     = true
 }
 
+variable "enable_linkerd_failover" {
+  description = "Enable Linkerd SMI"
+  type        = bool
+  default     = true
+}
+
