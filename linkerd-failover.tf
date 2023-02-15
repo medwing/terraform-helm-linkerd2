@@ -4,6 +4,9 @@ resource "helm_release" "linkerd-failover" {
   repository = "https://helm.linkerd.io/edge"
   chart      = "linkerd-failover"
   namespace  = "linkerd"
+  version    = ">0.0.0-0"
+
+
   depends_on = [
     helm_release.linkerd-control-plane
   ]
